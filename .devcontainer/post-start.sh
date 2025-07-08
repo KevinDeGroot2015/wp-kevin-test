@@ -3,28 +3,28 @@ set -e
 
 cd /var/www/html
 
-# Download WordPress als het nog niet aanwezig is
+# Download WordPress indien nodig
 if [ ! -f wp-load.php ]; then
   echo "⬇️ WordPress downloaden..."
   wp core download --allow-root
 fi
 
-# Wacht tot de database klaar is
-echo "⏳ Wachten op database (MariaDB)..."
+# Wachten op database-bereikbaarheid
+echo "⏳ Wachten op database (max 30 seconden)..."
 for i in {1..15}; do
-  if mysqladmin ping -h"$WORDPRESS_DB_HOST" -u"$WORDPRESS_DB_USER" -p"$WORDPRESS_DB_PASSWORD" --silent; then
-    echo "✅ Database is bereikbaar."
+  if wp db check --allow-root > /dev/null 2>&1; then
+    echo "✅ Database bereikbaar."
     break
   fi
   echo "⏳ Poging $i... database nog niet klaar."
   sleep 2
   if [ $i -eq 15 ]; then
-    echo "❌ Database blijft onbereikbaar. Check je configuratie of logs."
+    echo "❌ Fout: Database blijft onbereikbaar. Check je docker-compose config of DB logs."
     exit 1
   fi
 done
 
-# Installeer WordPress als nog niet gedaan
+# Installeer WordPress als het nog niet is gedaan
 if ! wp core is-installed --allow-root; then
   echo "⚙️ WordPress installeren..."
   wp core install \
@@ -37,7 +37,7 @@ if ! wp core is-installed --allow-root; then
     --allow-root
 fi
 
-# Dummy-content
+# Dummy content genereren met FakerPress
 echo "🎨 Dummy content aanmaken met FakerPress..."
 wp plugin install fakerpress --activate --allow-root
 wp fakerpress post generate --count=20 --status=publish --allow-root

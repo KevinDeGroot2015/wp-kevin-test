@@ -14,7 +14,7 @@ services:
   wordpress:
     build:
       context: .
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     container_name: wp_site
     depends_on:
       - db
