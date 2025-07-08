@@ -27,6 +27,7 @@ services:
       WORDPRESS_DB_PASSWORD: wp
     volumes:
       - .:/var/www/html
+      - ./.devcontainer/php.ini:/usr/local/etc/php/conf.d/zz-custom.ini
 
 volumes:
   db_data:
