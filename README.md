@@ -1,2 +1,4 @@
-# wp-kevin-test
-# wp-kevin-test
+# Wordpress installation
+- Includes docker container
+- Local database
+- Full wordpress installation
