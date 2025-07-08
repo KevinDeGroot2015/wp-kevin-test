@@ -4,7 +4,7 @@
   "service": "wordpress",
   "workspaceFolder": "/var/www/html",
   "forwardPorts": [8080],
-  "postStartCommand": "bash /post-start.sh",
+  "postStartCommand": "bash .devcontainer/post-start.sh",
   "customizations": {
     "vscode": {
       "extensions": [

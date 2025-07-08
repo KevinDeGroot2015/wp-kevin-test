@@ -12,7 +12,9 @@ services:
       - db_data:/var/lib/mysql
 
   wordpress:
-    image: wordpress:php8.3-apache
+    build:
+      context: .
+      dockerfile: dockerfile
     container_name: wp_site
     depends_on:
       - db
@@ -24,7 +26,7 @@ services:
       WORDPRESS_DB_USER: wp
       WORDPRESS_DB_PASSWORD: wp
     volumes:
-      - ./wp-content:/var/www/html/wp-content   # zodat je thema’s/plugins in VS Code ziet
+      - .:/var/www/html
 
 volumes:
   db_data:
