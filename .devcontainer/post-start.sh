@@ -3,33 +3,18 @@ set -e
 
 cd /var/www/html
 
-# Download WordPress indien nodig
+# Download WordPress if not already present
 if [ ! -f wp-load.php ]; then
-  echo "⬇️ WordPress downloaden..."
+  echo "Downloading WordPress..."
   wp core download --allow-root
 fi
 
-# Wachten op database-bereikbaarheid
-echo "⏳ Wachten op database (max 30 seconden)..."
-for i in {1..15}; do
-  if wp db check --allow-root > /dev/null 2>&1; then
-    echo "✅ Database bereikbaar."
-    break
-  fi
-  echo "⏳ Poging $i... database nog niet klaar."
-  sleep 2
-  if [ $i -eq 15 ]; then
-    echo "❌ Fout: Database blijft onbereikbaar. Check je docker-compose config of DB logs."
-    exit 1
-  fi
-done
-
-# Installeer WordPress als het nog niet is gedaan
+# Install WordPress if not already installed
 if ! wp core is-installed --allow-root; then
-  echo "⚙️ WordPress installeren..."
+  echo "Installing WordPress..."
   wp core install \
     --url="http://localhost:8080" \
-    --title="Demo‑site" \
+    --title="Demo site" \
     --admin_user=admin \
     --admin_password=admin \
     --admin_email=admin@example.com \
@@ -37,8 +22,22 @@ if ! wp core is-installed --allow-root; then
     --allow-root
 fi
 
-# Dummy content genereren met FakerPress
-echo "🎨 Dummy content aanmaken met FakerPress..."
+# Generate dummy content using FakerPress
+echo "Generating dummy content with FakerPress..."
 wp plugin install fakerpress --activate --allow-root
 wp fakerpress post generate --count=20 --status=publish --allow-root
 wp fakerpress term generate --count=10 --taxonomy=category --allow-root
+
+# NPM init and Husky setup
+if [ ! -f /var/www/html/package.json ]; then
+  echo "Generating package.json via npm init -y..."
+  npm init -y
+
+  cp /var/www/html/package.json /var/www/html/package.json
+fi
+
+echo "Setting up Husky and NPM scripts..."
+npm install --save-dev husky
+npx husky install
+npm set-script prepare "husky install"
+npm run prepare

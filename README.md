@@ -16,15 +16,19 @@ git commit -m "Install Wordpress default site"
 
 Make sure you have the following installed:
 
-- Docker Engine: https://docs.docker.com/engine/install/
-- Docker Compose: https://docs.docker.com/compose/install/
+- Docker Engine (docker desktop): https://www.docker.com/products/docker-desktop/
 - Unix-like shell (Linux, macOS, or Git Bash on Windows)
 
 ---
 
 ## Installation and Startup
-
-1. Build and start the containers:
+1. Navigate into the /app folder
+2. Make post-start.sh executable
+```git
+chmod +x post-start.sh
+```
+1. Make sure Docker desktop is opened and active.
+2. Build and start the containers:
 ```git
 docker compose up --build
 ```

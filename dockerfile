@@ -1,9 +1,17 @@
-# Dockerfile
-
 FROM wordpress:latest
 
-# Installeer mysql client zodat wp db check werkt
-RUN apt-get update && apt-get install -y default-mysql-client && rm -rf /var/lib/apt/lists/*
+# Install Node.js & npm
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+  && apt-get install -y nodejs \
+  && npm install -g npm
 
-# Zet werkdirectory voor consistentie (optioneel)
+# Install MySQL client for WP-CLI db check
+RUN apt-get update && apt-get install -y default-mysql-client \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install WP-CLI
+RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+  && chmod +x /usr/local/bin/wp
+
+# Set working directory
 WORKDIR /var/www/html
