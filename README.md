@@ -15,20 +15,20 @@ git commit -m "Install Wordpress default site"
 ## Prerequisites
 
 Make sure you have the following installed:
-
+- Node.js: https://nodejs.org/en/download
 - Docker Engine (docker desktop): https://www.docker.com/products/docker-desktop/
 - Unix-like shell (Linux, macOS, or Git Bash on Windows)
 
 ---
 
 ## Installation and Startup
-1. Navigate into the /app folder
+1. Execute `npm install`
 2. Make post-start.sh executable
 ```git
 chmod +x post-start.sh
 ```
-1. Make sure Docker desktop is opened and active.
-2. Build and start the containers:
+3. Make sure Docker desktop is opened and active.
+4. Build and start the containers:
 ```git
 docker compose up --build
 ```

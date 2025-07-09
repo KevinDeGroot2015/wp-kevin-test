@@ -1,4 +1,5 @@
 version: "3.9"
+
 services:
   db:
     image: mariadb:11
@@ -26,7 +27,8 @@ services:
       WORDPRESS_DB_USER: wp
       WORDPRESS_DB_PASSWORD: wp
     volumes:
-      - .:/var/www/html
+      - .:/workspace  
+      - ./html:/var/www/html
       - ./.devcontainer/php.ini:/usr/local/etc/php/conf.d/zz-custom.ini
 
 volumes:
